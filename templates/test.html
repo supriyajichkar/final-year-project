@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<style>
+body{
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+</style>
+
+
+</head>
+
+
+<body>
+    <div class="container" style="margin-top: 50px;">
+        <div class="jumbotron">
+        <h2> Ends in <div id='event-box'>{{time|date:"M d, Y H:m:s"}}</div></h2>
+        
+            <form method='post' action={% url 'evaluate' %}>
+                {% csrf_token %}
+                {% for i,j in objects %}
+                    <h3>Question: {{i}}</h3>
+                    <label class='form-group'>{{j}}</label>
+                    <textarea class="form-control from-group" name={{i}} placeholder='Your Answer' id="{{test_id}}-{{i}}" onkeyup="ses(this)"></textarea>
+                {% endfor %}
+
+                <input type='submit' id='submit-btn' class='btn btn-success btn-lg' style='margin: 20px; margin-left:0'>
+
+                {% comment %} <h3>Question: 1</h3>
+                <label class='form-group'>ksldfj oisdnf ohiwesj foiejs oijf oie hfouhse oufhiudshfiudhssui fhdsiuhfn jsdfhoisdjhfoi sdjfoisdu jpfiseho uf hoisdh f9oho</label>
+                <textarea class="form-control from-group" name='' ></textarea> {% endcomment %}
+            </form>
+        </div>
+
+    </div>
+
+    <script>
+      const eventBox = document.getElementById('event-box')
+      
+      const eventDate = Date.parse(eventBox.textContent)
+
+      setInterval(()=>{
+        const now = new Date().getTime()
+        const diff= eventDate-now
+
+        const d = Math.floor(eventDate / (1000 * 60 * 60 * 24) - (now / (1000 * 60 * 60 * 24)))
+        const h = Math.floor((eventDate / (1000 * 60 * 60) - (now / (1000 * 60 * 60))) % 24)
+        const m = Math.floor((eventDate / (1000 * 60) - (now / (1000 * 60))) % 60)
+        const s = Math.floor((eventDate / (1000) - (now / (1000))) % 60)
+        // console.log(d)
+
+        if (diff>0){
+          eventBox.innerHTML = d + " days, " + h + " hours, " + m + " mins, " + s + " sec"
+        }
+        else{
+          $('#submit-btn').click();
+        }
+      
+      }, 1000)
+
+      
+      function ses(inp){
+        console.log(inp.value)
+        if (typeof(Storage) !== "undefined") {
+          // Store
+          sessionStorage.setItem(inp.id, inp.value);
+          // Retrieve
+          // document.getElementById("result").innerHTML = sessionStorage.getItem("lastname");
+        } else {
+          // document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Storage...";
+          console.log("Sorry, your browser does not support Web Storage...");
+        }
+      }
+
+      function setValues(key){
+        if (document.getElementById(key)){
+          document.getElementById(key).innerHTML=sessionStorage.getItem(key);
+        }
+        
+      }
+
+      $( document ).ready(function(){
+        var keys = Object.keys(sessionStorage);
+        keys.forEach(setValues);
+      })
+
+    </script>
+</body>
+</html>

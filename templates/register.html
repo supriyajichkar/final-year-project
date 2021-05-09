@@ -1,0 +1,99 @@
+{% load static %}
+<html>
+
+<head>
+  <title>Register</title>
+  <!-- <link rel='stylesheet' href='{% static 'css/form.css' %}'> -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<style>
+
+.links{
+  padding: 20px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: url(https://pexels.imgix.net/photos/27718/pexels-photo-27718.jpg?fit=crop&w=1280&h=823) top left no-repeat;
+}
+
+.links btn{
+  width: 200px;
+  height: 50px;
+}
+
+body{
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+</style>
+</head>
+
+<body>
+  <div class='bold-line'></div>
+  <div class='container1'>
+    <div class='window'>
+      <div class='overlay'></div>
+      <center>
+      <div class='content container jumbotron img-thumbnail img-rounded' style='margin-top: 100px; text-align:center;'>
+        <div class='welcome'><h2>Register Yourself!</h2></div>
+        <div class='subtitle'><p>Welcome to the examination protal</p></div>
+        <div class="caution" style='text-align: center; padding: 10px; color: red;'>
+          {% for message in messages %}
+          {{message}}
+          {% endfor %}
+        </div>
+        <div class='input-fields' >
+          <form method='post' action='{% url 'register' %}'  >
+            {% csrf_token %}
+            <div style='display:flex; justify-content: space-evenly;'>
+            <div style='flex: .4;'>
+            <input type='text' placeholder='First Name' name='first_name' class='form-group form-control'></input>
+            <input type='text' placeholder='Last Name' name='last_name' class='form-group form-control'></input>
+            <input type='text' placeholder='Username' name='username' class='form-group form-control'></input>
+            <input type='email' placeholder='Email' name='email' class='form-group form-control'></input>
+            <input type='password' placeholder='Password' name='password1' class='form-group form-control'></input>
+            <input type='password' placeholder='Re-Password' name='password2' class='form-group form-control'></input>
+          </div>
+          <div style='flex: .4;'>
+            <input type='text' placeholder='Roll No.' name='roll_no' class='form-group form-control'></input>
+            <input type='text' placeholder='College Name' name='college_name' class='form-group form-control'></input>
+            <input type='text' placeholder='Branch' name='branch' class='form-group form-control'></input>
+            <input type='text' placeholder='Semester' name='semester' class='form-group form-control'></input>
+            <input type='date' placeholder='Date of Birth' name='dob' class='form-group form-control'></input>
+            <input type='text' placeholder='Subject Code' name='subject_code' class='form-group form-control'></input>
+          </div>
+        </div>
+          <div><input type='submit' class='ghost-round full-width btn btn-primary'</input></div>
+          </form>
+
+        </div>
+
+
+      </div>
+      </center>
+    </div>
+  </div>
+<div class="links">
+  <a href={% url 'login' %}><button class='btn btn-primary'>LogIn</button></a>
+  <a href='/admin'><button class='btn btn-primary'>Faculty Login</button></a>
+  </div>
+</body>
+
+</html>
